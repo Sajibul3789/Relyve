@@ -18,10 +18,10 @@
     <div class="main-nav">
         <div class="container flex-row">
             <a href="index.php" class="logo">
-                <div class="logo-box">P</div>
+                <div class="logo-box"> R </div>
                 <div>
-                    <b style="font-size:1.5rem; display:block">pickaboo</b>
-                    <small style="color:#999; display:block; margin-top:-5px">.com</small>
+                    <b style="font-size:1.5rem; display:block"> Relyve </b>
+                    <small style="color:#999; display:block; margin-top:-0.25rem"> .com </small>
                 </div>
             </a>
 
@@ -34,10 +34,6 @@
             </nav>
 
             <div class="nav-icons">
-                <a href="account.php" class="icon-btn">
-                    <i class="fas fa-user"> </i>
-                    <span class="hide-sm"> Account </span>
-                </a>
                 <a href="wishlist.php" class="icon-btn">
                     <i class="fas fa-heart"></i>
                     <span class="badge"> 3 </span>
@@ -47,6 +43,10 @@
                     <i class="fas fa-shopping-cart"></i>
                     <span class="badge"> 2 </span>
                     <span class="hide-sm"> Cart </span>
+                </a>
+                <a href="account.php" class="icon-btn">
+                    <i class="fas fa-user"> </i>
+                    <span class="hide-sm"> Account </span>
                 </a>
             </div>
         </div>
