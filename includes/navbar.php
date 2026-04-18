@@ -3,7 +3,7 @@
 
 <header>
 
-    /* Top Bar - div before navbar */
+    <!-- Top Bar - div before navbar -->
     <div class="top-bar">
         <div class="container flex-row">
             <div> <i class="fas fa-truck"> </i> Free Delivery Over ৳5000 </div>
@@ -14,7 +14,7 @@
         </div>
     </div>
 
-    /* Main Navigation Bar */
+    <!-- Main Navigation Bar -->
     <div class="main-nav">
         <div class="container flex-row">
             <a href="index.php" class="logo">
