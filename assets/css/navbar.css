@@ -1,0 +1,133 @@
+header
+{ 
+    background: var(--white); 
+    box-shadow: var(--shadow-sm); 
+    position: sticky; 
+    top: 0; 
+    z-index: 100; 
+}
+
+.top-bar
+{ 
+    background: var(--primary-dark); 
+    color: white; 
+    padding: 0.5rem 0rem; 
+    font-size: 0.8rem; 
+}
+
+.flex-row
+{ 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+}
+
+/* Main Navigation */
+.main-nav
+{ 
+    padding: 1rem 0; 
+    border-bottom: 0.1rem solid #eee; 
+}
+
+.logo
+{ 
+    display: flex; 
+    align-items: center; 
+    gap: 0.5rem; 
+    text-decoration: none; 
+    color: inherit; 
+}
+
+.logo-box
+{ 
+    background: var(--primary); 
+    color: white; 
+    width: 2.5rem; 
+    height: 2.5rem; 
+    border-radius: 0.75rem; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    font-weight: 800; 
+    font-size: 1.8rem; 
+}
+
+/* Navbar Links */
+nav a
+{ 
+    text-decoration: none; 
+    color: var(--text); 
+    font-size: 0.9rem; 
+    font-weight: 500; 
+    margin: 0 0.75rem; 
+    position: relative; 
+    padding-bottom: 0.25rem;
+}
+
+nav a:after
+{
+    content: ''; 
+    position: absolute; 
+    width: 0; 
+    height: 0.125rem;
+    bottom: 0; 
+    left: 0; 
+    background-color: var(--primary); 
+    transition: var(--transition);
+}
+
+nav a:hover:after
+{ 
+    width: 100%; 
+}
+
+nav a:hover
+{ 
+    color: var(--primary); 
+}
+
+.hot-deal
+{ 
+    color: #ef4444; 
+}
+
+/* Nav Icons */
+.nav-icons
+{ 
+    display: flex; 
+    gap: 1.5rem; 
+}
+
+.icon-btn
+{ 
+    text-decoration: none; 
+    color: var(--text); 
+    font-size: 0.85rem; 
+    position: relative; 
+    display: flex; 
+    align-items: center; 
+    font-weight: 400;
+    gap: 0.5rem; 
+}
+
+.icon-btn i
+{ 
+    font-size: 1.2rem; 
+}
+
+.badge
+{ 
+    position: absolute; 
+    top: -8px; 
+    left: 12px; 
+    background: var(--primary); 
+    color: white; 
+    font-size: 10px; 
+    width: 18px; 
+    height: 18px; 
+    border-radius: 50%; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    border: 2px solid white; 
+}

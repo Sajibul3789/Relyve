@@ -1,63 +1,27 @@
+<?php include 'includes/navbar.php'; ?>
+
 <!DOCTYPE html>
-
 <html lang="en">
-    
-<head>
 
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> Relyve - Online Shopping </title>
+    <title>Relyve - Online Shopping</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
-    <link rel="stylesheet" href="style.css">
-
+    <link rel="stylesheet" href="assets/css/index.css">
 </head>
 
 <body>
 
-    <header>
-        <div class="top-bar">
-            <div class="container flex-row">
-                <div><i class="fas fa-truck"></i> Free Delivery Over ৳5000</div>
-                <div style="display:flex; gap:20px;">
-                    <a href="#" style="color:white;text-decoration:none;">Track Order</a>
-                    <a href="#" style="color:white;text-decoration:none;">Support</a>
-                </div>
+    <div class="search-area">
+        <div class="container">
+            <div class="search-container">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" id="sInput" class="search-input" placeholder="Search smartphones, laptops, accessories...">
+                <button class="search-btn"> Search </button>
             </div>
         </div>
-
-        <div class="main-nav">
-            <div class="container flex-row">
-                <a href="#" class="logo">
-                    <div class="logo-box">P</div>
-                    <div><b style="font-size:1.5rem; display:block">pickaboo</b><small style="color:#999; display:block; margin-top:-5px">.com</small></div>
-                </a>
-
-                <nav class="hidden-mobile">
-                    <a href="#" style="color:var(--primary)">Home</a>
-                    <a href="#">Smartphones</a>
-                    <a href="#">Laptops</a>
-                    <a href="#">Tablets</a>
-                    <a href="#" class="hot-deal">Hot Deals 🔥</a>
-                </nav>
-
-                <div class="nav-icons">
-                    <a href="#" class="icon-btn"><i class="fas fa-user"></i> <span class="hide-sm">Account</span></a>
-                    <a href="#" class="icon-btn"><i class="fas fa-heart"></i> <span class="badge">3</span> <span class="hide-sm">Wishlist</span></a>
-                    <a href="#" class="icon-btn"><i class="fas fa-shopping-cart"></i> <span class="badge">2</span> <span class="hide-sm">Cart</span></a>
-                </div>
-            </div>
-        </div>
-
-        <div class="search-area">
-            <div class="container">
-                <div class="search-container">
-                    <i class="fas fa-search search-icon"></i>
-                    <input type="text" id="sInput" class="search-input" placeholder="Search smartphones, laptops, accessories...">
-                    <button class="search-btn" onclick="alert('Searching...')">Search</button>
-                </div>
-            </div>
-        </div>
-    </header>
+    </div>
 
     <main>
         <section class="hero">
@@ -65,7 +29,9 @@
                 <span class="hero-tag">NEW ARRIVALS 2026</span>
                 <h1>Samsung Galaxy<br>S25 Ultra</h1>
                 <p>Titanium design • AI Camera • 5000mAh Battery</p>
-                <button class="p-btn" style="width:auto; padding:18px 40px; border-radius:18px; font-size:1.1rem">Buy Now - ৳1,89,999</button>
+                <button class="p-btn" style="width:auto; padding:18px 40px; border-radius:18px; font-size:1.1rem">
+                    Buy Now - ৳1,89,999
+                </button>
             </div>
         </section>
 
@@ -103,31 +69,56 @@
             <div class="container">
                 <div class="section-header">
                     <h2>Flash Deals</h2>
-                    <a href="#" style="color:var(--primary); text-decoration:none; font-weight:600">View All →</a>
+                    <a href="hot-deals.php" style="color:var(--primary); text-decoration:none; font-weight:600">View All →</a>
                 </div>
                 <div class="product-grid" id="flashGrid"></div>
             </div>
         </section>
     </main>
 
-    <footer>
-        <div class="container">
-            <p>© 2026 Pickaboo.com • Clean Vanilla CSS Implementation</p>
-        </div>
-    </footer>
+    <?php include 'includes/footer.php'; ?>
 
     <script>
-        const products = [
-            { id: 1, name: "Samsung Galaxy S25 Ultra", price: "189999", old: "199999", disc: "5%" },
-            { id: 2, name: "Xiaomi Redmi Note 14 Pro", price: "32999", old: "37999", disc: "13%" },
-            { id: 3, name: "Apple AirPods Pro 2", price: "24999", old: "27999", disc: "11%" },
-            { id: 4, name: "Sony WH-1000XM5", price: "44999", old: "49999", disc: "10%" },
-            { id: 5, name: "OnePlus 13R", price: "59999", old: "64999", disc: "8%" }
+        const products = [{
+                id: 1,
+                name: "Samsung Galaxy S25 Ultra",
+                price: "189999",
+                old: "199999",
+                disc: "5%"
+            },
+            {
+                id: 2,
+                name: "Xiaomi Redmi Note 14 Pro",
+                price: "32999",
+                old: "37999",
+                disc: "13%"
+            },
+            {
+                id: 3,
+                name: "Apple AirPods Pro 2",
+                price: "24999",
+                old: "27999",
+                disc: "11%"
+            },
+            {
+                id: 4,
+                name: "Sony WH-1000XM5",
+                price: "44999",
+                old: "49999",
+                disc: "10%"
+            },
+            {
+                id: 5,
+                name: "OnePlus 13R",
+                price: "59999",
+                old: "64999",
+                disc: "8%"
+            }
         ];
 
         function renderProducts() {
             const grid = document.getElementById('flashGrid');
-            grid.innerHTML = ''; // Clear previous content
+            grid.innerHTML = '';
             products.forEach(p => {
                 const el = document.createElement('div');
                 el.className = 'product-card';
@@ -151,4 +142,5 @@
         window.onload = renderProducts;
     </script>
 </body>
+
 </html>
