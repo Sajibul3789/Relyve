@@ -91,7 +91,7 @@ include 'includes/navbar.php';
 
                     <div class="auth-footer">
                         Already have an account?
-                        <a href="login.php"> Sign in </a>
+                        <a href="login_form.php"> Sign in </a>
                     </div>
                 </div>
             </div>
