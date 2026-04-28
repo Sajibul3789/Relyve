@@ -37,7 +37,14 @@ include 'includes/navbar.php';
                         </div>
                     <?php endif; ?>
 
-                    <form action="register.php" method="POST" id="registerForm">
+                    <?php if (isset($_GET['success'])): ?>
+                        <div class="success">
+                            <i class="fas fa-check-circle"></i>
+                            <?php echo htmlspecialchars($_GET['success']); ?>
+                        </div>
+                    <?php endif; ?>
+
+                    <form action="process/register_process.php" method="POST" id="registerForm">
 
                         <div class="form-row">
                             <div class="form-group">

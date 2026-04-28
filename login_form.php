@@ -44,7 +44,7 @@ include 'includes/navbar.php';
                         </div>
                     <?php endif; ?>
 
-                    <form action="login_process.php" method="POST" id="loginForm">
+                    <form action="process/login_process.php" method="POST" id="loginForm">
 
                         <div class="form-group">
                             <label for="email"> Email Address </label>
