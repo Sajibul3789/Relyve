@@ -1,6 +1,6 @@
 <?php
 session_start();
-include '../configs/db.php';
+include '../config/db_connect.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $first_name     = trim($_POST['first_name']);

@@ -1,0 +1,199 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f5f5f5;
+}
+
+.header {
+    background: #222;
+    color: #fff;
+    padding: 15px;
+    text-align: center;
+    font-size: 22px;
+}
+
+.nav {
+    background: #444;
+    padding: 10px;
+    text-align: center;
+}
+
+.nav a {
+    color: white;
+    margin: 10px;
+    text-decoration: none;
+}
+
+.container {
+    width: 90%;
+    margin: 20px auto;
+}
+
+.card {
+    background: white;
+    padding: 20px;
+    margin: 20px auto;
+    width: 320px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+input, button {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0;
+}
+
+button {
+    background: #222;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.product {
+    display: inline-block;
+    width: 220px;
+    margin: 15px;
+    background: white;
+    padding: 10px;
+    border-radius: 10px;
+    text-align: center;
+}
+.hero {
+    background: linear-gradient(to right, #222, #555);
+    color: white;
+    padding: 60px;
+    text-align: center;
+}
+
+.hero h1 {
+    font-size: 40px;
+}
+
+.hero button {
+    padding: 12px 20px;
+    background: orange;
+    border: none;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+}
+table {
+    border-collapse: collapse;
+    background: white;
+}
+
+th {
+    background: #333;
+    color: white;
+}
+
+td, th {
+    text-align: center;
+}
+
+a {
+    text-decoration: none;
+    padding: 5px 10px;
+    background: #ddd;
+    margin: 2px;
+    display: inline-block;
+}
+
+a:hover {
+    background: #bbb;
+}
+
+.login-body {
+    margin: 0;
+    height: 100vh;
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.login-container {
+    animation: fadeIn 1s ease;
+}
+
+
+.login-card {
+    background: rgba(255, 255, 255, 0.15);
+    padding: 40px;
+    width: 320px;
+    border-radius: 15px;
+    backdrop-filter: blur(10px);
+    text-align: center;
+    color: white;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+
+.login-card h2 {
+    margin-bottom: 5px;
+}
+
+.subtitle {
+    font-size: 14px;
+    margin-bottom: 20px;
+    color: #ddd;
+}
+
+
+.login-card input {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border: none;
+    border-radius: 8px;
+    outline: none;
+}
+
+
+.login-card button {
+    width: 100%;
+    padding: 12px;
+    background: #ff7a18;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.login-card button:hover {
+    background: #ff5722;
+}
+
+
+.error {
+    color: #ffb3b3;
+    margin-top: 10px;
+}
+
+
+.login-card a {
+    display: block;
+    margin-top: 15px;
+    color: #fff;
+    text-decoration: underline;
+}
+
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
