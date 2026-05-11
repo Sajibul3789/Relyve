@@ -187,7 +187,7 @@ document.getElementById('checkoutForm').addEventListener('submit', function(e) {
     
     const formData = new FormData(this);
     
-    fetch('process/place_order_process.php', {
+    fetch('process/place_order.php', {
         method: 'POST',
         body: formData
     })

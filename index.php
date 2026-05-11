@@ -62,7 +62,7 @@ function display_product($product) {
             ?>
         </div>
         <button class="p-btn" 
-            onclick="event.stopPropagation(); location.href='process/add_to_cart.php?product_id=<?php echo $product['id']; ?>&quantity=1'">
+            onclick="event.stopPropagation(); addToCart(<?php echo $product['id']; ?>, 1)">
             Add to Cart
         </button>
     </div>
@@ -172,6 +172,202 @@ function display_product($product) {
 <?php include 'includes/footer.php'; ?>
 
 <script>
+document.getElementById('sInput').addEventListener('keypress', function(e) {
+    if(e.key === 'Enter') {
+        location.href='search.php?q=' + this.value;
+    }
+});
+</script>
+
+<script>
+function addToCart(productId, quantity) {
+    <?php if(!isset($_SESSION['user_id'])): ?>
+        if(confirm('Please login to add items to cart. Go to login page?')) {
+            window.location.href = 'login_form.php';
+        }
+        return;
+    <?php endif; ?>
+    
+    // Disable button
+    const buttons = document.querySelectorAll('.p-btn');
+    let clickedButton = null;
+    buttons.forEach(btn => {
+        if(btn.onclick && btn.onclick.toString().includes('addToCart(' + productId)) {
+            clickedButton = btn;
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Adding...';
+        }
+    });
+    
+    console.log('Sending request for product:', productId, 'quantity:', quantity);
+    
+    fetch('process/add_to_cart.php?product_id=' + productId + '&quantity=' + quantity, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-Requested-With': 'XMLHttpRequest'
+        }
+    })
+    .then(response => {
+        console.log('Response status:', response.status);
+        return response.json();
+    })
+    .then(data => {
+        console.log('Response data:', data);
+        
+        // Re-enable button
+        if(clickedButton) {
+            clickedButton.disabled = false;
+            clickedButton.innerHTML = 'Add to Cart';
+        }
+        
+        if(data.success) {
+            let message = '';
+            if(data.action === 'updated') {
+                message = `✓ ${data.product_name || 'Product'} quantity updated!`;
+            } else {
+                message = `✓ ${data.message || 'Product added to cart!'}`;
+            }
+            showNotification(message, 'success');
+            updateCartCount();
+        } else {
+            let errorMsg = data.message || 'Error adding to cart';
+            if(data.debug) {
+                console.error('Debug info:', data.debug);
+                errorMsg += ' (Check console for details)';
+            }
+            showNotification(errorMsg, 'error');
+        }
+    })
+    .catch(error => {
+        console.error('Fetch error:', error);
+        if(clickedButton) {
+            clickedButton.disabled = false;
+            clickedButton.innerHTML = 'Add to Cart';
+        }
+        showNotification('Network error: Could not connect to server', 'error');
+    });
+}
+
+function showNotification(message, type) {
+    // Remove existing notifications
+    const existingNotifications = document.querySelectorAll('.notification');
+    existingNotifications.forEach(notif => notif.remove());
+    
+    const notification = document.createElement('div');
+    notification.className = `notification ${type}`;
+    
+    let icon = '';
+    let bgColor = '';
+    
+    if(type === 'success') {
+        icon = '<i class="fas fa-check-circle"></i> ';
+        bgColor = '#22c55e';
+    } else if(type === 'info') {
+        icon = '<i class="fas fa-info-circle"></i> ';
+        bgColor = '#3b82f6';
+    } else {
+        icon = '<i class="fas fa-exclamation-circle"></i> ';
+        bgColor = '#ef4444';
+    }
+    
+    notification.innerHTML = icon + message;
+    notification.style.cssText = `
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        padding: 15px 25px;
+        border-radius: 12px;
+        color: white;
+        font-weight: 500;
+        z-index: 10000;
+        animation: slideIn 0.3s ease;
+        background: ${bgColor};
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        font-size: 14px;
+        min-width: 250px;
+        text-align: center;
+        font-family: 'Inter', sans-serif;
+    `;
+    document.body.appendChild(notification);
+    
+    setTimeout(() => {
+        notification.style.animation = 'slideOut 0.3s ease';
+        setTimeout(() => {
+            notification.remove();
+        }, 300);
+    }, 3000);
+}
+
+function updateCartCount() {
+    fetch('process/get_cart_count.php')
+    .then(response => response.json())
+    .then(data => {
+        const badges = document.querySelectorAll('.badge');
+        badges.forEach(badge => {
+            if(data.count && data.count > 0) {
+                badge.textContent = data.count;
+                badge.style.display = 'flex';
+            } else {
+                badge.textContent = '0';
+            }
+        });
+    })
+    .catch(error => {
+        console.error('Error fetching cart count:', error);
+    });
+}
+
+// Add CSS animations
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes slideIn {
+        from {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+    @keyframes slideOut {
+        from {
+            transform: translateX(0);
+            opacity: 1;
+        }
+        to {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+    }
+    .p-btn:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+    }
+    .badge {
+        position: absolute;
+        top: -8px;
+        right: -8px;
+        background: #f97316;
+        color: white;
+        font-size: 10px;
+        min-width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+    }
+`;
+document.head.appendChild(style);
+
+// Initialize on page load
+document.addEventListener('DOMContentLoaded', function() {
+    updateCartCount();
+});
+
 document.getElementById('sInput').addEventListener('keypress', function(e) {
     if(e.key === 'Enter') {
         location.href='search.php?q=' + this.value;

@@ -9,7 +9,12 @@ if(!isset($_SESSION['user_id'])) {
 }
 
 $user_id = $_SESSION['user_id'];
-$product_id = $_POST['product_id'] ?? 0;
+$product_id = isset($_POST['product_id']) ? (int)$_POST['product_id'] : 0;
+
+if($product_id <= 0) {
+    echo json_encode(['success' => false]);
+    exit();
+}
 
 $sql = "DELETE FROM cart WHERE user_id = $user_id AND product_id = $product_id";
 $result = mysqli_query($conn, $sql);
