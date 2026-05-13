@@ -1,6 +1,6 @@
 <?php
 session_start();
-include 'includes/navbar.php';
+include_once 'includes/navbar.php';
 ?>
 
 <!DOCTYPE html>
@@ -87,7 +87,7 @@ include 'includes/navbar.php';
         </div>
     </main>
 
-    <?php include 'includes/footer.php'; ?>
+    <?php include_once 'includes/footer.php'; ?>
 
     <script src="assets/js/main.js"></script>
 

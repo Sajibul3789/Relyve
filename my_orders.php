@@ -1,6 +1,7 @@
 <?php
 session_start();
-include 'config/db_connect.php';
+include_once 'includes/navbar.php';
+include_once 'config/db_connect.php';
 
 if(!isset($_SESSION['user_id'])) {
     header("Location: login_form.php");
@@ -8,7 +9,6 @@ if(!isset($_SESSION['user_id'])) {
 }
 
 $user_id = $_SESSION['user_id'];
-// Using simple SELECT without foreign keys
 $orders_sql = "SELECT * FROM orders WHERE user_id = $user_id ORDER BY created_at DESC";
 $orders_result = mysqli_query($conn, $orders_sql);
 ?>
@@ -30,32 +30,44 @@ $orders_result = mysqli_query($conn, $orders_sql);
         .orders-title {
             font-size: 2rem;
             margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
         .order-card {
             background: white;
-            border-radius: 20px;
-            padding: 25px;
-            margin-bottom: 25px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            transition: var(--transition);
+        }
+        .order-card:hover {
+            box-shadow: 0 4px 15px rgba(0,0,0,0.12);
         }
         .order-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding-bottom: 15px;
-            border-bottom: 1px solid #e5e7eb;
-            margin-bottom: 15px;
             flex-wrap: wrap;
             gap: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #f0f0f0;
+            margin-bottom: 15px;
         }
         .order-number {
             font-weight: 600;
             color: var(--primary);
+            font-size: 1.1rem;
+        }
+        .order-date {
+            color: var(--text-light);
+            font-size: 0.85rem;
         }
         .order-status {
-            padding: 5px 12px;
+            padding: 4px 12px;
             border-radius: 20px;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             font-weight: 600;
         }
         .status-pending { background: #fef3c7; color: #d97706; }
@@ -63,7 +75,7 @@ $orders_result = mysqli_query($conn, $orders_sql);
         .status-shipped { background: #e0e7ff; color: #4f46e5; }
         .status-delivered { background: #dcfce7; color: #16a34a; }
         .status-cancelled { background: #fee2e2; color: #dc2626; }
-        .order-details {
+        .order-body {
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -78,10 +90,10 @@ $orders_result = mysqli_query($conn, $orders_sql);
         .view-btn {
             background: var(--primary);
             color: white;
-            padding: 10px 25px;
-            border-radius: 30px;
+            padding: 8px 20px;
+            border-radius: 8px;
             text-decoration: none;
-            font-weight: 600;
+            font-weight: 500;
             transition: var(--transition);
         }
         .view-btn:hover {
@@ -89,9 +101,9 @@ $orders_result = mysqli_query($conn, $orders_sql);
         }
         .empty-orders {
             text-align: center;
-            padding: 80px;
+            padding: 80px 20px;
             background: white;
-            border-radius: 20px;
+            border-radius: 16px;
         }
         .empty-orders i {
             font-size: 4rem;
@@ -102,11 +114,12 @@ $orders_result = mysqli_query($conn, $orders_sql);
 </head>
 <body>
 
-<?php include 'includes/navbar.php'; ?>
-
 <main>
     <div class="orders-container">
-        <h1 class="orders-title">My Orders</h1>
+        <div class="orders-title">
+            <i class="fas fa-shopping-bag"></i>
+            <h1>My Orders</h1>
+        </div>
         
         <?php if(mysqli_num_rows($orders_result) > 0): ?>
             <?php while($order = mysqli_fetch_assoc($orders_result)): ?>
@@ -122,13 +135,10 @@ $orders_result = mysqli_query($conn, $orders_sql);
                             </span>
                         </div>
                     </div>
-                    <div class="order-details">
+                    <div class="order-body">
                         <div>
                             <div>Payment: <?php echo ucfirst($order['payment_method']); ?></div>
-                            <div>Items: <?php 
-                                $item_count = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as count FROM order_items WHERE order_id = {$order['id']}"));
-                                echo $item_count['count'];
-                            ?> products</div>
+                            <div>Payment Status: <?php echo ucfirst($order['payment_status']); ?></div>
                         </div>
                         <div class="order-total">৳<?php echo number_format($order['total_amount']); ?></div>
                         <a href="order_details.php?id=<?php echo $order['id']; ?>" class="view-btn">View Details →</a>
@@ -140,12 +150,12 @@ $orders_result = mysqli_query($conn, $orders_sql);
                 <i class="fas fa-shopping-bag"></i>
                 <h2>No orders yet</h2>
                 <p>You haven't placed any orders yet</p>
-                <a href="index.php" class="p-btn" style="display: inline-block; width: auto; padding: 12px 30px; margin-top: 20px;">Start Shopping</a>
+                <a href="index.php" class="continue-shopping" style="display: inline-block; background: var(--primary); color: white; padding: 12px 30px; border-radius: 8px; text-decoration: none; margin-top: 20px;">Start Shopping</a>
             </div>
         <?php endif; ?>
     </div>
 </main>
 
-<?php include 'includes/footer.php'; ?>
+<?php include_once 'includes/footer.php'; ?>
 </body>
 </html>

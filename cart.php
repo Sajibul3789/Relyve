@@ -1,7 +1,7 @@
 <?php
 session_start();
-include 'includes/navbar.php';
-include 'config/db_connect.php';
+include_once 'includes/navbar.php';
+include_once 'config/db_connect.php';
 
 $user_id = $_SESSION['user_id'] ?? 0;
 $cart_items = [];
@@ -386,7 +386,7 @@ if($user_id) {
     </div>
 </main>
 
-<?php include 'includes/footer.php'; ?>
+<?php include_once 'includes/footer.php'; ?>
 
 <script>
 // Update quantity
@@ -405,19 +405,12 @@ function updateQuantity(productId, newQuantity) {
         if (data.success) {
             document.getElementById('qty-' + productId).value = newQuantity;
             document.getElementById('total-' + productId).innerHTML = '৳' + data.item_total;
-            
-            // Update the data-quantity attribute
-            const cartItem = document.getElementById('cart-item-' + productId);
-            cartItem.setAttribute('data-quantity', newQuantity);
-            
-            // Update checkbox data
-            const checkbox = document.querySelector(`.item-checkbox[data-id="${productId}"]`);
-            if (checkbox && checkbox.checked) {
-                checkbox.setAttribute('data-quantity', newQuantity);
-                updateSelectedTotals();
-            }
-            
             updateCartTotals();
+            
+            // Just call the global function
+            if(typeof window.updateCartBadge === 'function') {
+                window.updateCartBadge();
+            }
         } else {
             alert(data.message || 'Error updating quantity');
         }
@@ -444,8 +437,12 @@ function removeFromCart(productId) {
                 const cartItem = document.getElementById('cart-item-' + productId);
                 cartItem.remove();
                 updateCartTotals();
-                updateCartCount();
                 updateSelectedTotals();
+                
+                // Update cart badge
+                if(typeof window.updateCartBadge === 'function') {
+                    window.updateCartBadge();
+                }
                 
                 if (document.querySelectorAll('.cart-item').length === 0) {
                     location.reload();
@@ -556,7 +553,7 @@ function updateCartCount() {
     .then(response => response.json())
     .then(data => {
         document.querySelectorAll('.badge').forEach(badge => {
-            badge.textContent = data.count;
+            badge.textContent = wishlistdata.count;
         });
     })
     .catch(error => console.error('Error:', error));

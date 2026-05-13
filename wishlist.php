@@ -1,7 +1,6 @@
 <?php
 session_start();
-include 'includes/navbar.php';
-include 'config/db_connect.php';
+include_once 'config/db_connect.php';
 
 // Check if user is logged in
 if(!isset($_SESSION['user_id'])) {
@@ -10,6 +9,10 @@ if(!isset($_SESSION['user_id'])) {
 }
 
 $user_id = $_SESSION['user_id'];
+
+// ============================================
+// HANDLE ALL ACTIONS BEFORE ANY OUTPUT
+// ============================================
 
 // Handle remove from wishlist
 if(isset($_GET['remove'])) {
@@ -35,6 +38,11 @@ if(isset($_POST['add_all_to_cart'])) {
     header("Location: wishlist.php?added=all");
     exit();
 }
+
+// ============================================
+// NOW INCLUDE NAVBAR - AFTER ALL redirects
+// ============================================
+include_once 'includes/navbar.php';
 
 // Get wishlist items with product details using JOIN
 $wishlist_sql = "SELECT p.*, w.created_at as date_added 
@@ -127,7 +135,6 @@ $wishlist_count = mysqli_num_rows($wishlist_result);
             transform: translateY(-2px);
         }
         
-        /* Empty Wishlist */
         .empty-wishlist {
             text-align: center;
             padding: 80px 20px;
@@ -160,7 +167,6 @@ $wishlist_count = mysqli_num_rows($wishlist_result);
             font-weight: 600;
         }
         
-        /* Wishlist Grid */
         .wishlist-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -336,7 +342,6 @@ $wishlist_count = mysqli_num_rows($wishlist_result);
             border-top: 1px solid #f0f0f0;
         }
         
-        /* Notification */
         .notification {
             position: fixed;
             bottom: 20px;
@@ -492,7 +497,7 @@ $wishlist_count = mysqli_num_rows($wishlist_result);
     </div>
 </main>
 
-<?php include 'includes/footer.php'; ?>
+<?php include_once 'includes/footer.php'; ?>
 
 <script>
 // Show notification
@@ -529,8 +534,11 @@ function addToCart(productId, quantity) {
     .then(response => response.json())
     .then(data => {
         if(data.success) {
-            showNotification(data.message || 'Product added to cart!', 'success');
-            updateCartCount();
+            showNotification('Product added to cart!', 'success');
+            // Update cart badge using global function
+            if(typeof window.updateCartBadge === 'function') {
+                window.updateCartBadge();
+            }
         } else {
             showNotification(data.message || 'Error adding to cart', 'error');
         }
@@ -541,7 +549,7 @@ function addToCart(productId, quantity) {
     });
 }
 
-// Remove from wishlist
+// Remove from wishlist (using AJAX)
 function removeFromWishlist(productId) {
     if(confirm('Remove this item from your wishlist?')) {
         fetch('process/remove_from_wishlist.php', {
@@ -555,28 +563,36 @@ function removeFromWishlist(productId) {
         .then(data => {
             if(data.success) {
                 const wishlistItem = document.getElementById('wishlist-item-' + productId);
-                wishlistItem.style.transition = 'all 0.3s';
-                wishlistItem.style.opacity = '0';
-                wishlistItem.style.transform = 'scale(0.8)';
-                
-                setTimeout(() => {
-                    wishlistItem.remove();
-                    showNotification('Item removed from wishlist', 'info');
-                    
-                    // Update count
-                    const remainingItems = document.querySelectorAll('.wishlist-card').length;
-                    const countSpan = document.querySelector('.wishlist-title span');
-                    if(countSpan) {
-                        countSpan.textContent = remainingItems + ' items';
-                    }
-                    
-                    // Show empty state if no items left
-                    if(remainingItems === 0) {
-                        location.reload();
-                    }
-                }, 300);
+                if(wishlistItem) {
+                    wishlistItem.style.transition = 'all 0.3s';
+                    wishlistItem.style.opacity = '0';
+                    wishlistItem.style.transform = 'scale(0.8)';
+                    setTimeout(() => {
+                        wishlistItem.remove();
+                        showNotification('Item removed from wishlist', 'success');
+                        
+                        // Update count
+                        const remainingItems = document.querySelectorAll('.wishlist-card').length;
+                        const countSpan = document.querySelector('.wishlist-title span');
+                        if(countSpan) {
+                            countSpan.textContent = remainingItems + ' items';
+                        }
+                        
+                        // Update wishlist badge
+                        if(typeof window.updateWishlistBadge === 'function') {
+                            window.updateWishlistBadge();
+                        } else if(data.wishlist_count !== undefined) {
+                            const badge = document.getElementById('wishlistBadge');
+                            if(badge) badge.textContent = data.wishlist_count;
+                        }
+                        
+                        if(remainingItems === 0) {
+                            location.reload();
+                        }
+                    }, 300);
+                }
             } else {
-                showNotification('Error removing item', 'error');
+                showNotification(data.message || 'Error removing item', 'error');
             }
         })
         .catch(error => {
@@ -584,19 +600,6 @@ function removeFromWishlist(productId) {
             showNotification('Error removing item', 'error');
         });
     }
-}
-
-// Update cart count badge
-function updateCartCount() {
-    fetch('process/get_cart_count.php')
-    .then(response => response.json())
-    .then(data => {
-        const badges = document.querySelectorAll('.badge');
-        badges.forEach(badge => {
-            badge.textContent = data.count;
-        });
-    })
-    .catch(error => console.error('Error:', error));
 }
 
 // Add CSS animations if not present
@@ -618,7 +621,13 @@ if(!document.querySelector('#wishlist-styles')) {
 
 // Initialize on page load
 document.addEventListener('DOMContentLoaded', function() {
-    updateCartCount();
+    // Update badges
+    if(typeof window.updateCartBadge === 'function') {
+        window.updateCartBadge();
+    }
+    if(typeof window.updateWishlistBadge === 'function') {
+        window.updateWishlistBadge();
+    }
 });
 </script>
 

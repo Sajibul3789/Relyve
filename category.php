@@ -1,20 +1,11 @@
 <?php
 session_start();
-include 'includes/navbar.php';
-include 'config/db_connect.php';
+include_once 'includes/navbar.php';
+include_once 'config/db_connect.php';
 
 $category = isset($_GET['cat']) ? mysqli_real_escape_string($conn, $_GET['cat']) : '';
 $products = [];
 
-if($category) {
-    $sql = "SELECT * FROM products WHERE category = '$category'";
-    $result = mysqli_query($conn, $sql);
-    while($row = mysqli_fetch_assoc($result)) {
-        $products[] = $row;
-    }
-}
-
-// Category display names
 $category_names = [
     'smartphones' => 'Smartphones',
     'laptops' => 'Laptops',
@@ -23,7 +14,16 @@ $category_names = [
     'tv_audio' => 'TV & Audio',
     'watches' => 'Watches'
 ];
+
 $display_name = $category_names[$category] ?? ucfirst($category);
+
+if($category) {
+    $sql = "SELECT * FROM products WHERE category = '$category' ORDER BY created_at DESC";
+    $result = mysqli_query($conn, $sql);
+    while($row = mysqli_fetch_assoc($result)) {
+        $products[] = $row;
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -34,27 +34,83 @@ $display_name = $category_names[$category] ?? ucfirst($category);
     <title><?php echo $display_name; ?> - Relyve</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     <link rel="stylesheet" href="assets/css/style.css">
+    <style>
+        .category-header {
+            background: linear-gradient(135deg, #f97316, #ea580c);
+            color: white;
+            padding: 60px 0;
+            text-align: center;
+        }
+        .category-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        .product-count {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+        .filter-bar {
+            background: white;
+            padding: 15px 0;
+            margin-bottom: 30px;
+            border-bottom: 1px solid #eee;
+        }
+        .sort-select {
+            padding: 8px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+        .no-products {
+            text-align: center;
+            padding: 80px 20px;
+            background: white;
+            border-radius: 16px;
+        }
+        .no-products i {
+            font-size: 4rem;
+            color: #ccc;
+            margin-bottom: 20px;
+        }
+    </style>
 </head>
 <body>
 
-<main>
+<div class="category-header">
     <div class="container">
-        <div class="section">
-            <h2><?php echo $display_name; ?></h2>
-            <p style="margin-bottom: 30px; color: var(--text-light);">Showing <?php echo count($products); ?> products</p>
-            
-            <?php if(empty($products)): ?>
-                <div style="text-align: center; padding: 60px;">
-                    <i class="fas fa-box-open" style="font-size: 4rem; color: #ddd; margin-bottom: 20px;"></i>
-                    <h3>No products in this category</h3>
-                    <p>Check back later for new arrivals</p>
-                    <a href="index.php" class="p-btn" style="display: inline-block; width: auto; padding: 12px 30px;">Back to Home</a>
-                </div>
-            <?php else: ?>
-                <div class="product-grid">
-                    <?php foreach($products as $product): ?>
-                    <div class="product-card">
-                        <div class="p-img">
+        <h1><?php echo $display_name; ?></h1>
+        <p class="product-count"><?php echo count($products); ?> products found</p>
+    </div>
+</div>
+
+<div class="filter-bar">
+    <div class="container" style="display: flex; justify-content: flex-end;">
+        <select class="sort-select" id="sortSelect">
+            <option value="default">Sort by: Default</option>
+            <option value="price_low">Price: Low to High</option>
+            <option value="price_high">Price: High to Low</option>
+            <option value="newest">Newest First</option>
+        </select>
+    </div>
+</div>
+
+<main>
+    <div class="container" style="padding: 40px 0;">
+        <?php if(empty($products)): ?>
+            <div class="no-products">
+                <i class="fas fa-box-open"></i>
+                <h2>No products in this category</h2>
+                <p>Check back later for new arrivals</p>
+                <a href="index.php" class="p-btn" style="display: inline-block; width: auto; padding: 12px 30px; margin-top: 20px;">Back to Home</a>
+            </div>
+        <?php else: ?>
+            <div class="product-grid" id="productGrid">
+                <?php foreach($products as $product): ?>
+                    <div class="product-card" data-price="<?php echo $product['price']; ?>" data-date="<?php echo $product['created_at']; ?>">
+                        <button class="wishlist-btn-card" 
+                            onclick="event.stopPropagation(); location.href='<?php echo isset($_SESSION['user_id']) ? 'process/add_to_wishlist.php?id='.$product['id'] : 'login_form.php'; ?>'">
+                            <i class="far fa-heart"></i>
+                        </button>
+                        <div class="p-img" onclick="location.href='product_details.php?id=<?php echo $product['id']; ?>'">
                             <img src="<?php echo $product['image_url']; ?>" alt="<?php echo $product['name']; ?>">
                             <?php if($product['old_price']): ?>
                                 <div class="p-discount">
@@ -64,23 +120,20 @@ $display_name = $category_names[$category] ?? ucfirst($category);
                         </div>
                         <div class="p-info">
                             <div class="p-title"><?php echo htmlspecialchars($product['name']); ?></div>
-                            <div class="p-price">৳<?php echo number_format($product['price']); ?>
+                            <div class="p-price">
+                                ৳<?php echo number_format($product['price']); ?>
                                 <?php if($product['old_price']): ?>
                                     <span class="p-old">৳<?php echo number_format($product['old_price']); ?></span>
                                 <?php endif; ?>
                             </div>
-                            <button class="p-btn" onclick="addToCart(<?php echo $product['id']; ?>, 1)">Add to Cart</button>
-                            <a href="product-details.php?id=<?php echo $product['id']; ?>" class="p-btn" style="display:block; text-align:center; text-decoration:none; margin-top:8px; background:#f3f4f6; color:var(--text)">View Details</a>
+                            <button class="p-btn" onclick="event.stopPropagation(); addToCart(<?php echo $product['id']; ?>, 1)">Add to Cart</button>
                         </div>
                     </div>
-                    <?php endforeach; ?>
-                </div>
-            <?php endif; ?>
-        </div>
+                <?php endforeach; ?>
+            </div>
+        <?php endif; ?>
     </div>
 </main>
-
-<?php include 'includes/footer.php'; ?>
 
 <script>
 function addToCart(productId, quantity) {
@@ -91,13 +144,7 @@ function addToCart(productId, quantity) {
         return;
     <?php endif; ?>
     
-    fetch('process/add_to_cart_process.php', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: 'product_id=' + productId + '&quantity=' + quantity
-    })
+    fetch('process/add_to_cart.php?product_id=' + productId + '&quantity=' + quantity)
     .then(response => response.json())
     .then(data => {
         if(data.success) {
@@ -113,12 +160,31 @@ function updateCartCount() {
     fetch('process/get_cart_count.php')
     .then(response => response.json())
     .then(data => {
-        const badges = document.querySelectorAll('.badge');
-        badges.forEach(badge => {
-            badge.textContent = data.count;
-        });
+        document.querySelectorAll('.badge').forEach(b => b.textContent = data.count);
     });
 }
+
+// Sorting functionality
+document.getElementById('sortSelect')?.addEventListener('change', function() {
+    const grid = document.getElementById('productGrid');
+    const products = Array.from(grid.children);
+    const sortBy = this.value;
+    
+    products.sort((a, b) => {
+        if(sortBy === 'price_low') {
+            return parseFloat(a.dataset.price) - parseFloat(b.dataset.price);
+        } else if(sortBy === 'price_high') {
+            return parseFloat(b.dataset.price) - parseFloat(a.dataset.price);
+        } else if(sortBy === 'newest') {
+            return new Date(b.dataset.date) - new Date(a.dataset.date);
+        }
+        return 0;
+    });
+    
+    products.forEach(product => grid.appendChild(product));
+});
 </script>
+
+<?php include_once 'includes/footer.php'; ?>
 </body>
 </html>

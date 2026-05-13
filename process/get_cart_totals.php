@@ -1,7 +1,7 @@
 <?php
 session_start();
 header('Content-Type: application/json');
-include '../config/db_connect.php';
+include_once '../config/db_connect.php';
 
 if(!isset($_SESSION['user_id'])) {
     echo json_encode(['subtotal' => 0, 'grand_total' => 0]);
