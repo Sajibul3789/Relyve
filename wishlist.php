@@ -63,346 +63,430 @@ $wishlist_count = mysqli_num_rows($wishlist_result);
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     <link rel="stylesheet" href="assets/css/style.css">
     <style>
+        /* ============================================
+           WISHLIST CONTAINER
+        ============================================ */
         .wishlist-container {
-            max-width: 1200px;
-            margin: 40px auto;
-            padding: 0 20px;
+            max-width: 1280px;
+            margin: var(--spacing-2xl) auto;
+            padding: 0 var(--spacing-xl);
         }
-        
+
+        /* Breadcrumb */
+        .breadcrumb {
+            margin-bottom: var(--spacing-xl);
+        }
+
+        .breadcrumb a {
+            color: var(--gray-500);
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: var(--transition);
+        }
+
+        .breadcrumb a:hover {
+            color: var(--primary);
+        }
+
+        .breadcrumb span {
+            color: var(--gray-400);
+            margin: 0 var(--spacing-xs);
+        }
+
+        .breadcrumb .current {
+            color: var(--primary);
+            font-weight: 500;
+        }
+
+        /* Wishlist Header */
         .wishlist-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
-            gap: 20px;
-            margin-bottom: 30px;
+            gap: var(--spacing-lg);
+            margin-bottom: var(--spacing-2xl);
+            padding-bottom: var(--spacing-lg);
+            border-bottom: 2px solid var(--gray-200);
         }
-        
+
         .wishlist-title {
-            font-size: 1.8rem;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: var(--spacing-md);
         }
-        
+
         .wishlist-title i {
+            font-size: 2rem;
             color: #ef4444;
         }
-        
-        .wishlist-title span {
-            background: #f97316;
-            color: white;
-            font-size: 0.9rem;
-            padding: 2px 10px;
-            border-radius: 20px;
+
+        .wishlist-title h1 {
+            font-size: 1.8rem;
+            margin-bottom: 0;
+            color: var(--gray-900);
         }
-        
+
+        .wishlist-title span {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: var(--white);
+            font-size: 0.8rem;
+            padding: 4px 12px;
+            border-radius: var(--radius-full);
+            font-weight: 600;
+        }
+
+        /* Wishlist Actions */
         .wishlist-actions {
             display: flex;
-            gap: 10px;
+            gap: var(--spacing-md);
         }
-        
+
         .clear-wishlist-btn, .add-all-btn {
             padding: 10px 20px;
-            border-radius: 8px;
+            border-radius: var(--radius-lg);
             text-decoration: none;
             font-size: 0.85rem;
             font-weight: 500;
-            transition: all 0.2s;
+            transition: var(--transition);
             cursor: pointer;
             border: none;
+            display: inline-flex;
+            align-items: center;
+            gap: var(--spacing-sm);
         }
-        
+
         .clear-wishlist-btn {
-            background: white;
-            border: 1px solid #ef4444;
-            color: #ef4444;
+            background: var(--white);
+            border: 1px solid var(--danger);
+            color: var(--danger);
         }
-        
+
         .clear-wishlist-btn:hover {
-            background: #ef4444;
-            color: white;
-        }
-        
-        .add-all-btn {
-            background: #22c55e;
-            color: white;
-            border: none;
-        }
-        
-        .add-all-btn:hover {
-            background: #16a34a;
+            background: var(--danger);
+            color: var(--white);
             transform: translateY(-2px);
         }
-        
+
+        .add-all-btn {
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            color: var(--white);
+        }
+
+        .add-all-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        /* Empty Wishlist */
         .empty-wishlist {
             text-align: center;
-            padding: 80px 20px;
-            background: white;
-            border-radius: 16px;
+            padding: var(--spacing-3xl);
+            background: var(--white);
+            border-radius: var(--radius-xl);
+            border: 1px solid var(--gray-200);
         }
-        
+
         .empty-wishlist i {
             font-size: 5rem;
-            color: #ccc;
-            margin-bottom: 20px;
+            color: var(--gray-300);
+            margin-bottom: var(--spacing-lg);
         }
-        
+
         .empty-wishlist h2 {
-            margin-bottom: 10px;
+            font-size: 1.5rem;
+            margin-bottom: var(--spacing-md);
+            color: var(--gray-800);
         }
-        
+
         .empty-wishlist p {
-            color: #666;
-            margin-bottom: 30px;
+            color: var(--gray-500);
+            margin-bottom: var(--spacing-xl);
         }
-        
+
         .shop-now-btn {
-            display: inline-block;
-            background: #f97316;
-            color: white;
+            display: inline-flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: var(--white);
             padding: 12px 30px;
-            border-radius: 8px;
+            border-radius: var(--radius-lg);
             text-decoration: none;
             font-weight: 600;
+            transition: var(--transition);
         }
-        
+
+        .shop-now-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        /* Wishlist Grid */
         .wishlist-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 25px;
+            gap: var(--spacing-xl);
         }
-        
+
+        /* Wishlist Card */
         .wishlist-card {
-            background: white;
-            border-radius: 16px;
+            background: var(--white);
+            border-radius: var(--radius-xl);
+            border: 1px solid var(--gray-200);
             overflow: hidden;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-            transition: all 0.3s;
+            transition: var(--transition);
             position: relative;
         }
-        
+
         .wishlist-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            transform: translateY(-8px);
+            border-color: var(--primary);
+            box-shadow: var(--shadow-xl);
         }
-        
+
+        /* Remove Button */
         .remove-wishlist {
             position: absolute;
-            top: 12px;
-            right: 12px;
-            background: white;
+            top: var(--spacing-md);
+            right: var(--spacing-md);
+            background: var(--white);
             border: none;
-            width: 32px;
-            height: 32px;
+            width: 34px;
+            height: 34px;
             border-radius: 50%;
             cursor: pointer;
-            color: #999;
+            color: var(--gray-400);
             font-size: 1rem;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.2s;
+            transition: var(--transition);
             z-index: 10;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            box-shadow: var(--shadow-sm);
         }
-        
+
         .remove-wishlist:hover {
-            background: #ef4444;
-            color: white;
+            background: var(--danger);
+            color: var(--white);
             transform: scale(1.1);
         }
-        
+
+        /* Product Image */
         .wishlist-img {
             height: 220px;
             overflow: hidden;
             cursor: pointer;
-            background: #f8f9fa;
+            background: linear-gradient(135deg, var(--gray-50), var(--white));
+            position: relative;
         }
-        
+
         .wishlist-img img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: transform 0.3s;
+            transition: transform var(--transition);
         }
-        
+
         .wishlist-card:hover .wishlist-img img {
-            transform: scale(1.05);
+            transform: scale(1.08);
         }
-        
+
+        /* Discount Badge on Image */
+        .img-discount {
+            position: absolute;
+            top: var(--spacing-md);
+            left: var(--spacing-md);
+            background: linear-gradient(135deg, var(--danger), #dc2626);
+            color: var(--white);
+            padding: 4px 12px;
+            border-radius: var(--radius-full);
+            font-size: 0.7rem;
+            font-weight: 700;
+            z-index: 5;
+        }
+
+        /* Wishlist Info */
         .wishlist-info {
-            padding: 15px;
+            padding: var(--spacing-lg);
         }
-        
+
         .wishlist-name {
             font-weight: 600;
             font-size: 1rem;
-            margin-bottom: 8px;
+            margin-bottom: var(--spacing-sm);
             cursor: pointer;
+            color: var(--gray-800);
+            line-height: 1.4;
+            height: 44px;
+            overflow: hidden;
         }
-        
+
         .wishlist-name:hover {
-            color: #f97316;
+            color: var(--primary);
         }
-        
+
+        /* Price Section */
         .wishlist-price {
             display: flex;
             align-items: baseline;
-            gap: 10px;
-            margin-bottom: 10px;
+            gap: var(--spacing-sm);
+            flex-wrap: wrap;
+            margin-bottom: var(--spacing-sm);
         }
-        
+
         .current-price {
-            color: #f97316;
+            color: var(--primary);
             font-weight: 700;
             font-size: 1.2rem;
         }
-        
+
         .old-price {
-            color: #999;
+            color: var(--gray-400);
             font-size: 0.85rem;
             text-decoration: line-through;
         }
-        
+
         .discount-badge {
-            background: #ef4444;
-            color: white;
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: var(--white);
             padding: 2px 8px;
-            border-radius: 12px;
-            font-size: 0.7rem;
+            border-radius: var(--radius-full);
+            font-size: 0.65rem;
             font-weight: 600;
         }
-        
+
+        /* Rating */
+        .rating {
+            margin: var(--spacing-sm) 0;
+            display: flex;
+            gap: 3px;
+        }
+
+        .rating i {
+            color: #fbbf24;
+            font-size: 0.75rem;
+        }
+
+        /* Stock Status */
         .wishlist-stock {
             font-size: 0.75rem;
-            margin-bottom: 15px;
+            margin-bottom: var(--spacing-md);
         }
-        
+
         .in-stock {
-            color: #22c55e;
+            color: var(--success);
         }
-        
+
         .out-stock {
-            color: #ef4444;
+            color: var(--danger);
         }
-        
+
+        /* Card Actions */
         .wishlist-actions-card {
             display: flex;
-            gap: 10px;
+            gap: var(--spacing-sm);
+            margin-top: var(--spacing-sm);
         }
-        
+
         .add-to-cart-wishlist {
-            flex: 2;
+            width: 100%;
             padding: 10px;
-            background: #f97316;
-            color: white;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: var(--white);
             border: none;
-            border-radius: 8px;
+            border-radius: var(--radius-lg);
             cursor: pointer;
             font-weight: 600;
-            transition: all 0.2s;
+            transition: var(--transition);
         }
-        
+
         .add-to-cart-wishlist:hover {
-            background: #ea580c;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-sm);
         }
-        
+
         .add-to-cart-wishlist:disabled {
-            background: #ccc;
+            background: var(--gray-300);
             cursor: not-allowed;
+            transform: none;
         }
-        
-        .view-details {
-            flex: 1;
-            padding: 10px;
-            background: #f3f4f6;
-            color: #374151;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 500;
-            transition: all 0.2s;
-            text-decoration: none;
-            text-align: center;
-            display: inline-block;
-            font-size: 0.85rem;
-        }
-        
-        .view-details:hover {
-            background: #e5e7eb;
-        }
-        
+
+        /* Date Added */
         .date-added {
             font-size: 0.7rem;
-            color: #999;
-            margin-top: 10px;
+            color: var(--gray-400);
+            margin-top: var(--spacing-md);
+            padding-top: var(--spacing-sm);
+            border-top: 1px solid var(--gray-100);
             text-align: center;
-            padding-top: 10px;
-            border-top: 1px solid #f0f0f0;
         }
-        
+
+        /* Notification */
         .notification {
             position: fixed;
             bottom: 20px;
             right: 20px;
-            padding: 15px 20px;
-            border-radius: 10px;
-            color: white;
+            padding: 15px 25px;
+            border-radius: var(--radius-lg);
+            color: var(--white);
             font-weight: 500;
             z-index: 10001;
             animation: slideIn 0.3s ease;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            box-shadow: var(--shadow-lg);
         }
-        
-        .notification.success {
-            background: #22c55e;
-        }
-        
-        .notification.error {
-            background: #ef4444;
-        }
-        
-        .notification.info {
-            background: #3b82f6;
-        }
-        
+
+        .notification.success { background: linear-gradient(135deg, #22c55e, #16a34a); }
+        .notification.error { background: linear-gradient(135deg, #ef4444, #dc2626); }
+        .notification.info { background: linear-gradient(135deg, #3b82f6, #2563eb); }
+
         @keyframes slideIn {
-            from {
-                transform: translateX(100%);
-                opacity: 0;
-            }
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
         }
-        
+
         @keyframes slideOut {
-            from {
-                transform: translateX(0);
-                opacity: 1;
-            }
-            to {
-                transform: translateX(100%);
-                opacity: 0;
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(100%); opacity: 0; }
+        }
+
+        /* ============================================
+           RESPONSIVE DESIGN
+        ============================================ */
+        @media (max-width: 1024px) {
+            .wishlist-grid {
+                grid-template-columns: repeat(2, 1fr);
             }
         }
-        
+
         @media (max-width: 768px) {
+            .wishlist-container {
+                padding: 0 var(--spacing-md);
+                margin: var(--spacing-xl) auto;
+            }
             .wishlist-header {
                 flex-direction: column;
                 align-items: flex-start;
             }
-            
             .wishlist-actions {
                 width: 100%;
                 justify-content: space-between;
             }
-            
             .wishlist-grid {
-                grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-                gap: 15px;
+                grid-template-columns: 1fr;
+                gap: var(--spacing-md);
+            }
+            .wishlist-title h1 {
+                font-size: 1.4rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .wishlist-actions {
+                flex-direction: column;
+            }
+            .clear-wishlist-btn, .add-all-btn {
+                justify-content: center;
             }
         }
     </style>
@@ -411,6 +495,14 @@ $wishlist_count = mysqli_num_rows($wishlist_result);
 
 <main>
     <div class="wishlist-container">
+        <!-- Breadcrumb -->
+        <div class="breadcrumb">
+            <a href="index.php"><i class="fas fa-home"></i> Home</a>
+            <span><i class="fas fa-chevron-right"></i></span>
+            <span class="current">My Wishlist</span>
+        </div>
+
+        <!-- Wishlist Header -->
         <div class="wishlist-header">
             <div class="wishlist-title">
                 <i class="fas fa-heart"></i>
@@ -433,13 +525,17 @@ $wishlist_count = mysqli_num_rows($wishlist_result);
         </div>
         
         <?php if($wishlist_count == 0): ?>
+            <!-- Empty Wishlist -->
             <div class="empty-wishlist">
                 <i class="far fa-heart"></i>
                 <h2>Your wishlist is empty</h2>
                 <p>Save your favorite items here to buy them later</p>
-                <a href="index.php" class="shop-now-btn">Start Shopping →</a>
+                <a href="index.php" class="shop-now-btn">
+                    <i class="fas fa-shopping-cart"></i> Start Shopping
+                </a>
             </div>
         <?php else: ?>
+            <!-- Wishlist Grid -->
             <div class="wishlist-grid">
                 <?php while($product = mysqli_fetch_assoc($wishlist_result)): 
                     $discount = 0;
@@ -453,7 +549,10 @@ $wishlist_count = mysqli_num_rows($wishlist_result);
                         </button>
                         
                         <div class="wishlist-img" onclick="location.href='product_details.php?id=<?php echo $product['id']; ?>'">
-                            <img src="<?php echo $product['image_url']; ?>" alt="<?php echo $product['name']; ?>">
+                            <img src="<?php echo $product['image_url']; ?>" alt="<?php echo htmlspecialchars($product['name']); ?>">
+                            <?php if($discount > 0): ?>
+                                <div class="img-discount">-<?php echo $discount; ?>%</div>
+                            <?php endif; ?>
                         </div>
                         
                         <div class="wishlist-info">
@@ -469,6 +568,21 @@ $wishlist_count = mysqli_num_rows($wishlist_result);
                                 <?php endif; ?>
                             </div>
                             
+                            <div class="rating">
+                                <?php 
+                                $rating = $product['rating'] ?? 0;
+                                for($i = 1; $i <= 5; $i++):
+                                    if($i <= floor($rating)):
+                                        echo '<i class="fas fa-star"></i>';
+                                    elseif($i - $rating <= 0.5):
+                                        echo '<i class="fas fa-star-half-alt"></i>';
+                                    else:
+                                        echo '<i class="far fa-star"></i>';
+                                    endif;
+                                endfor;
+                                ?>
+                            </div>
+                            
                             <div class="wishlist-stock">
                                 <?php if($product['stock'] > 0): ?>
                                     <span class="in-stock"><i class="fas fa-check-circle"></i> In Stock (<?php echo $product['stock']; ?> left)</span>
@@ -481,9 +595,6 @@ $wishlist_count = mysqli_num_rows($wishlist_result);
                                 <button class="add-to-cart-wishlist" onclick="addToCart(<?php echo $product['id']; ?>, 1)" <?php echo $product['stock'] <= 0 ? 'disabled' : ''; ?>>
                                     <i class="fas fa-shopping-cart"></i> Add to Cart
                                 </button>
-                                <a href="product_details.php?id=<?php echo $product['id']; ?>" class="view-details">
-                                    View
-                                </a>
                             </div>
                             
                             <div class="date-added">
@@ -525,6 +636,12 @@ function addToCart(productId, quantity) {
         return;
     <?php endif; ?>
     
+    const button = event?.target?.closest('.add-to-cart-wishlist');
+    if(button) {
+        button.disabled = true;
+        button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Adding...';
+    }
+    
     fetch('process/add_to_cart.php?product_id=' + productId + '&quantity=' + quantity, {
         method: 'GET',
         headers: {
@@ -533,9 +650,13 @@ function addToCart(productId, quantity) {
     })
     .then(response => response.json())
     .then(data => {
+        if(button) {
+            button.disabled = false;
+            button.innerHTML = '<i class="fas fa-shopping-cart"></i> Add to Cart';
+        }
+        
         if(data.success) {
             showNotification('Product added to cart!', 'success');
-            // Update cart badge using global function
             if(typeof window.updateCartBadge === 'function') {
                 window.updateCartBadge();
             }
@@ -544,6 +665,10 @@ function addToCart(productId, quantity) {
         }
     })
     .catch(error => {
+        if(button) {
+            button.disabled = false;
+            button.innerHTML = '<i class="fas fa-shopping-cart"></i> Add to Cart';
+        }
         console.error('Error:', error);
         showNotification('Error adding to cart', 'error');
     });
