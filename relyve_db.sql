@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 14, 2026 at 03:58 PM
+-- Generation Time: May 19, 2026 at 04:50 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -40,11 +40,6 @@ CREATE TABLE `cart` (
 --
 
 INSERT INTO `cart` (`id`, `user_id`, `product_id`, `quantity`, `created_at`) VALUES
-(32, 2, 1, 1, '2026-05-13 13:57:44'),
-(33, 2, 2, 4, '2026-05-13 13:57:44'),
-(34, 2, 4, 5, '2026-05-13 13:57:44'),
-(35, 2, 8, 4, '2026-05-13 13:57:44'),
-(36, 2, 11, 4, '2026-05-13 13:57:44'),
 (38, 1, 4, 1, '2026-05-14 03:10:27'),
 (39, 1, 1, 1, '2026-05-14 03:10:27'),
 (40, 1, 8, 2, '2026-05-14 03:10:29');
@@ -104,7 +99,8 @@ CREATE TABLE `orders` (
 INSERT INTO `orders` (`id`, `order_number`, `user_id`, `total_amount`, `payment_method`, `payment_status`, `order_status`, `shipping_address`, `shipping_city`, `shipping_zip`, `shipping_phone`, `notes`, `created_at`) VALUES
 (1, 'RELYVE1778467758598', 2, 2539982.00, 'cod', 'pending', 'pending', 'adas, sdfs, 24', 'sdfs', '24', '01627870424', '', '2026-05-11 02:49:18'),
 (2, 'RELYVE1778727088766', 1, 249999.00, 'cod', 'pending', 'pending', 'fsfs, 234, 3242', '234', '3242', '01700000000', '', '2026-05-14 02:51:28'),
-(3, 'RELYVE1778727257272', 1, 249999.00, 'cod', 'pending', 'delivered', 'sfs, wwfwe, 232', 'wwfwe', '232', '01700000000', '', '2026-05-14 02:54:17');
+(3, 'RELYVE1778727257272', 1, 249999.00, 'cod', 'pending', 'delivered', 'sfs, wwfwe, 232', 'wwfwe', '232', '01700000000', '', '2026-05-14 02:54:17'),
+(4, 'RELYVE1778814095803', 2, 89999.00, 'bkash', 'pending', 'pending', '0, Nolua, Dariapur, Shahjadpur, SIrajganj, Sirajganj, 6770', 'Sirajganj', '6770', '01627870424', '', '2026-05-15 03:01:35');
 
 -- --------------------------------------------------------
 
@@ -132,7 +128,8 @@ INSERT INTO `order_items` (`id`, `order_id`, `product_id`, `product_name`, `quan
 (4, 1, 8, 'Sony WH-1000XM5', 6, 44999.00),
 (5, 1, 11, 'Apple Watch Ultra 2', 1, 89999.00),
 (6, 2, 4, 'MacBook Pro M3', 1, 249999.00),
-(7, 3, 4, 'MacBook Pro M3', 1, 249999.00);
+(7, 3, 4, 'MacBook Pro M3', 1, 249999.00),
+(8, 4, 11, 'Apple Watch Ultra 2', 1, 89999.00);
 
 -- --------------------------------------------------------
 
@@ -174,7 +171,7 @@ INSERT INTO `products` (`id`, `name`, `description`, `price`, `old_price`, `cate
 (8, 'Sony WH-1000XM5', 'Industry-leading noise cancellation headphones', 44999.00, 49999.00, 'accessories', 34, 4.9, 'https://images.unsplash.com/photo-1618366712010-f4ae9c647dcb?w=300', 0, NULL, NULL, NULL, NULL, 0, '2026-05-10 13:31:23'),
 (9, 'Apple AirPods Pro 2', 'Active Noise Cancellation, Adaptive Audio', 24999.00, 27999.00, 'accessories', 60, 4.8, 'https://images.unsplash.com/photo-1600294037681-c80b4f3e9f39?w=300', 0, NULL, NULL, NULL, NULL, 0, '2026-05-10 13:31:23'),
 (10, 'Samsung QLED 4K TV', '65\" Neo QLED 4K Smart TV', 199999.00, 219999.00, 'tv_audio', 8, 4.7, 'https://images.unsplash.com/photo-1593359677879-a4bb92f829d1?w=300', 0, NULL, NULL, NULL, NULL, 0, '2026-05-10 13:31:23'),
-(11, 'Apple Watch Ultra 2', '49mm titanium case, dual-frequency GPS', 89999.00, 94999.00, 'watches', 24, 4.9, 'https://images.unsplash.com/photo-1579586337278-3befd40fd17a?w=300', 0, NULL, NULL, NULL, NULL, 0, '2026-05-10 13:31:23'),
+(11, 'Apple Watch Ultra 2', '49mm titanium case, dual-frequency GPS', 89999.00, 94999.00, 'watches', 23, 4.9, 'https://images.unsplash.com/photo-1579586337278-3befd40fd17a?w=300', 0, NULL, NULL, NULL, NULL, 0, '2026-05-10 13:31:23'),
 (12, 'Logitech MX Master 3S', 'Advanced wireless mouse', 9999.00, 12999.00, 'accessories', 75, 4.6, 'https://images.unsplash.com/photo-1615663245857-ac93bb7c39e7?w=300', 1, NULL, NULL, NULL, NULL, 0, '2026-05-10 13:31:23');
 
 -- --------------------------------------------------------
@@ -224,7 +221,8 @@ CREATE TABLE `wishlist` (
 INSERT INTO `wishlist` (`id`, `user_id`, `product_id`, `created_at`) VALUES
 (9, 1, 4, '2026-05-13 12:04:23'),
 (14, 1, 8, '2026-05-13 12:19:49'),
-(43, 2, 4, '2026-05-13 15:23:47');
+(45, 2, 4, '2026-05-15 02:59:10'),
+(46, 2, 1, '2026-05-15 02:59:11');
 
 --
 -- Indexes for dumped tables
@@ -284,7 +282,7 @@ ALTER TABLE `wishlist`
 -- AUTO_INCREMENT for table `cart`
 --
 ALTER TABLE `cart`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
 
 --
 -- AUTO_INCREMENT for table `hero_section`
@@ -296,13 +294,13 @@ ALTER TABLE `hero_section`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `order_items`
 --
 ALTER TABLE `order_items`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `products`
@@ -320,7 +318,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `wishlist`
 --
 ALTER TABLE `wishlist`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

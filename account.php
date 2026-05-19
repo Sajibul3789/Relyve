@@ -522,7 +522,7 @@ $cart_count = mysqli_fetch_assoc(mysqli_query($conn, "SELECT SUM(quantity) as co
                 <h3>Shopping Cart</h3>
                 <p>Review items in your cart</p>
             </a>
-            <a href="track-order.php" class="action-card">
+            <a href="track_order.php" class="action-card">
                 <div class="action-icon">
                     <i class="fas fa-truck"></i>
                 </div>

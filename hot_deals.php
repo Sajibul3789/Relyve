@@ -474,10 +474,11 @@ $total_deals = mysqli_num_rows($hot_deals_result);
         <h1><i class="fas fa-bolt"></i> Hot Deals & Flash Sales</h1>
         <p>Limited time offers with up to 70% off - Grab them before they're gone!</p>
         <div class="global-timer-wrapper">
-            <div class="text-center">
+            <!--<div class="text-center">
                 <div class="timer-digits">
                     <span id="timerDays">00</span>:<span id="timerHours">00</span>:<span id="timerMinutes">00</span>:<span id="timerSeconds">00</span>
                 </div>
+                -->
                 <div class="timer-label">UNTIL BEST DEALS END</div>
             </div>
         </div>

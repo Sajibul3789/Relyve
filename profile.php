@@ -516,9 +516,9 @@ $member_since = date('F Y', strtotime($user['created_at']));
             <button class="tab-btn active" data-tab="info">
                 <i class="fas fa-user"></i> Personal Info
             </button>
-            <button class="tab-btn" data-tab="password">
+            <!--<button class="tab-btn" data-tab="password">
                 <i class="fas fa-lock"></i> Change Password
-            </button>
+            </button> -->
             <button class="tab-btn" data-tab="orders">
                 <i class="fas fa-history"></i> Order History
             </button>

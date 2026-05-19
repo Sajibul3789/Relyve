@@ -477,7 +477,7 @@ include_once 'includes/navbar.php';
                                 <input type="checkbox" id="remember" name="remember">
                                 <span>Remember me</span>
                             </label>
-                            <a href="forgot_password.php" class="forgot-link">Forgot Password?</a>
+                            <a href="#" class="forgot-link">Forgot Password?</a>
                         </div>
 
                         <button type="submit" class="auth-btn" id="loginBtn">

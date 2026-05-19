@@ -22,11 +22,11 @@
             </div>
             <div class="footer-column">
                 <h4><i class="fas fa-user-circle"></i> My Account</h4>
-                <a href="profile.php">My Profile</a>
-                <a href="my_orders.php">My Orders</a>
-                <a href="wishlist.php">Wishlist</a>
-                <a href="cart.php">Shopping Cart</a>
                 <?php if(isset($_SESSION['user_id'])): ?>
+                    <a href="profile.php">My Profile</a>
+                    <a href="my_orders.php">My Orders</a>
+                    <a href="wishlist.php">Wishlist</a>
+                    <a href="cart.php">Shopping Cart</a>
                     <a href="logout.php">Logout</a>
                 <?php else: ?>
                     <a href="login_form.php">Login</a>
